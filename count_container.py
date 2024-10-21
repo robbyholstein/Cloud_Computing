@@ -52,15 +52,13 @@ def count_words(filepath):
     return word_count, word_frequency
 
 def get_container_ip():
-    host_ip = socket.gethostbyname("host.docker.internal")
-    return host_ip
+    return socket.gethostbyname('host.docker.internal')
 
 def main():
     directory = '/home/data'
     # Counting the files...
     total_word_count = 0
-    total_word_frequencies_IF = Counter()
-    total_word_frequencies_Always = Counter()
+    total_word_frequencies = Counter()
     file_word_counts = {}
     for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)
@@ -69,9 +67,7 @@ def main():
             file_word_counts[filename] = word_count
             total_word_count += word_count
             if (filepath == '/home/data/AlwaysRememberUsThisWay.txt'):
-                total_word_frequencies_Always.update(word_frequencies)
-            if (filepath == '/home/data/IF.txt'):
-                total_word_frequencies_IF.update(word_frequencies)
+                total_word_frequencies.update(word_frequencies)
     ip_addr = get_container_ip()
     # Printing Output...
     f = open('results.txt', 'w')
@@ -79,13 +75,10 @@ def main():
     for filename, word_count in file_word_counts.items():
         f.write(f"{filename} contained {word_count} words\n")
     f.write(f"Total Word Count: {total_word_count} words across all files\n")
-    top_words_Always = total_word_frequencies_Always.most_common(3)
-    top_words_IF = total_word_frequencies_IF.most_common(3)
-    for word, count in top_words_Always:
+    top_words = total_word_frequencies.most_common(3)
+    for word, count in top_words:
         f.write(f"{word} appeared {count} times in AlwaysRememberUsThisWay.txt\n")
-    for word, count in top_words_IF:
-        f.write(f"{word} appeared {count} times in IF.txt\n")
-    f.write(f"Ip address of the host machine running the container is: {ip_addr}\n")
+    f.write(f"Ip address of the container is: {ip_addr}\n")
     f.close()
     f = open('results.txt', 'r')
     file_contents = f.read()

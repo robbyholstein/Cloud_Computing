@@ -77,7 +77,7 @@ def main():
     f.write(f"Total Word Count: {total_word_count} words across all files\n")
     top_words = total_word_frequencies.most_common(3)
     for word, count in top_words:
-        f.write(f"{word} appeared {count} times\n")
+        f.write(f"{word} appeared {count} times in AlwaysRememberUsThisWay.txt\n")
     f.write(f"Ip address of the container is: {ip_addr}\n")
     f.close()
     f = open('results.txt', 'r')
